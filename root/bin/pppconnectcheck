@@ -26,6 +26,11 @@ config_load "syncdial"
 config_get_bool dialchk config dialchk 0
 config_get dial config dialnum
 config_get dialwait config dialwait 20
+config_get enabled config enabled 0
+[ "$enabled" = "0" ] && {
+	echo "syncdial disabled."
+	return 0
+}
 [ "$dialchk" = "0" ] && {
 	echo "dial check disabled."
 	return 0
