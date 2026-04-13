@@ -1,0 +1,16 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(gh api:*)",
+      "WebFetch(domain:raw.githubusercontent.com)",
+      "Bash(mkdir -p /tmp/syncdial_backup)",
+      "Bash(cp -r luasrc root po /tmp/syncdial_backup/)",
+      "Bash(git checkout:*)",
+      "Bash(git clean:*)",
+      "Bash(git add:*)",
+      "Bash(git commit -m ':*)",
+      "Bash(git rm:*)",
+      "Bash(git push:*)"
+    ]
+  }
+}

@@ -1,0 +1,96 @@
+msgid ""
+msgstr ""
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Language: zh_Hans\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+
+msgid "Multi-Syncdial"
+msgstr "多线多拨"
+
+msgid "Create multiple virtual WAN interfaces using macvlan driver for concurrent dialing"
+msgstr "使用macvlan驱动创建多个虚拟WAN口，支持并发多拨"
+
+msgid "Current online interface count: "
+msgstr "当前在线接口数量："
+
+msgid "Enable"
+msgstr "启用"
+
+msgid "Enable concurrent dialing"
+msgstr "启用并发多拨"
+
+msgid "Dial type"
+msgstr "多拨类型"
+
+msgid "Single-line multi-dial"
+msgstr "单线多拨"
+
+msgid "Dual-line multi-dial"
+msgstr "双线多拨"
+
+msgid "Select WAN interface"
+msgstr "选择外网接口"
+
+msgid "Specify the WAN interface for multi-dial, e.g. wan"
+msgstr "指定要多拨的外网接口，如wan"
+
+msgid "Enable IPv6"
+msgstr "启用IPv6"
+
+msgid "Number of virtual WAN interfaces"
+msgstr "虚拟WAN接口数量"
+
+msgid "Bind to physical interface"
+msgstr "绑定物理接口"
+
+msgid "Select second WAN interface"
+msgstr "选择第二个外网接口"
+
+msgid "<font color=\"red\">Specify the second WAN interface for multi-dial, e.g. wan2</font>"
+msgstr "<font color=\"red\">指定要多拨的第二个外网接口，如wan2</font>"
+
+msgid "Second line virtual WAN count"
+msgstr "第二条线虚拟WAN接口数量"
+
+msgid "Number of virtual interfaces for the second line"
+msgstr "设置第二条线的拨号数"
+
+msgid "Bind second line virtual interfaces to physical interface"
+msgstr "第二条线生成的虚拟接口绑定当前物理接口"
+
+msgid "Enable disconnect detection"
+msgstr "启用掉线检测"
+
+msgid "Minimum online interfaces"
+msgstr "最低在线接口数量"
+
+msgid "Redial if online interface count is below this value (each IPv6 also counts as one)"
+msgstr "如果在线接口数量小于这个值则重拨。(每个ipv6也算一个接口)"
+
+msgid "Second line minimum online interfaces"
+msgstr "第二条线最低在线接口数量"
+
+msgid "Redial if second line online interface count is below this value (each IPv6 also counts as one)"
+msgstr "如果第二条线在线接口数量小于这个值则重拨。(每个ipv6也算一个接口)"
+
+msgid "Redial wait time"
+msgstr "重拨等待时间"
+
+msgid "Wait time after all interfaces go down before next dial attempt. Unit: seconds, minimum: 5"
+msgstr "重拨时，接口全部下线后下一次拨号前的等待时间。单位：秒 最小值：5秒"
+
+msgid "Use legacy macvlan creation mode"
+msgstr "使用旧的macvlan创建方式"
+
+msgid "Do not auto-configure MWAN3 load balancing"
+msgstr "不自动配置MWAN3负载均衡"
+
+msgid "Select this if you need custom load balancing or policy routing"
+msgstr "需要自定义负载均衡设置或者要使用策略路由的用户选择"
+
+msgid "Concurrent redial"
+msgstr "重新并发拨号"
+
+msgid "Redial"
+msgstr "重新拨号"

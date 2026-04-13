@@ -15,5 +15,6 @@ config syncdial 'config'
 	option devbackup 'wan wan6 wan2'
 	option bindwan '0'
 	option bindwan2 '0'
+	option ipv6 '0'
 	option enabled '0'
 

@@ -2,8 +2,28 @@
 #PPPoE拨号在线接口数检测及重拨脚本
 . /lib/functions.sh
 [ -f /etc/config/syncdial ] || {
-	return 1
+	exit 1
 }
+
+#统计在线vwan接口数量（优先读取mwan3状态文件，回退到ubus查询）
+count_online_vwan() {
+	local count=0
+	local status_dir="/var/run/mwan3track"
+	for iface in $(uci -q show network | grep '=interface' | cut -d. -f2 | cut -d= -f1); do
+		case "$iface" in
+			vwan*) ;;
+			*) continue ;;
+		esac
+		if [ -f "$status_dir/$iface/STATUS" ]; then
+			[ "$(cat $status_dir/$iface/STATUS)" = "online" ] && count=$((count+1))
+		else
+			local up=$(ubus -S call network.interface.$iface status 2>/dev/null | jsonfilter -e '@.up' 2>/dev/null)
+			[ "$up" = "true" ] && count=$((count+1))
+		fi
+	done
+	echo $count
+}
+
 #操作配置
 #参数 $1 配置项
 ifs_opt_down() {
@@ -29,25 +49,25 @@ config_get dialwait config dialwait 20
 config_get enabled config enabled 0
 [ "$enabled" = "0" ] && {
 	echo "syncdial disabled."
-	return 0
+	exit 0
 }
 [ "$dialchk" = "0" ] && {
 	echo "dial check disabled."
-	return 0
+	exit 0
 }
-[ $(ps | grep -c "pppconnectcheck") -gt 3 ] && logger -t PPPoE-IFChecker "Another checker is running.exit." && return 1
+[ $(pgrep -c pppconnectcheck) -gt 2 ] && logger -t PPPoE-IFChecker "Another checker is running.exit." && exit 1
 
-PPPUPNUM=$(ifconfig | grep -c vwan)
+PPPUPNUM=$(count_online_vwan)
 logger -t PPPoE-IFChecker "$PPPUPNUM interfaces are online."
 if [ ! "$PPPUPNUM" -lt $dial ]; then
-	interval="$(uci get mwan3.wan.failure_interval)"
-	cheng="$(uci get mwan3.wan.up)"
+	interval="$(uci -q get mwan3.wan.failure_interval)"
+	cheng="$(uci -q get mwan3.wan.up)"
 	[ -z "$interval" ] && interval=5
 	[ -z "$cheng" ] && cheng=1
 	sleep $((interval*cheng+1))
-	PPPUPNUM=$(mwan3 interfaces | grep -c "is online")
-	[ "$PPPUPNUM" == "0" ] && (pgrep mwan3track || (logger -t PPPoE-IFChecker "mwan3track not running" ; return 1))
-	[ ! "$PPPUPNUM" -lt $dial ] && logger -t PPPoE-IFChecker "Nothing to do.Exit." && return 0
+	PPPUPNUM=$(count_online_vwan)
+	[ "$PPPUPNUM" == "0" ] && (pgrep mwan3track || (logger -t PPPoE-IFChecker "mwan3track not running" ; exit 1))
+	[ ! "$PPPUPNUM" -lt $dial ] && logger -t PPPoE-IFChecker "Nothing to do.Exit." && exit 0
 fi
 logger -t PPPoE-IFChecker "Stop interfaces."
 ifdown wan
@@ -60,4 +80,4 @@ ifup wan
 logger -t PPPoE-IFChecker "Interfaces restarted."
 logger -t PPPoE-IFChecker "Another checker will be started 15s later."
 sleep 15 && pppconnectcheck &
-return 0
+exit 0
